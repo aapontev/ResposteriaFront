@@ -1,0 +1,57 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="card-title mb-0">{{ titulo }}</h2>
+        <a class="btn btn-rosa-secondary" routerLink="/recetas/nuevo">
+          <i class="bi bi-plus-circle"></i> Nueva Receta
+        </a>
+      </div>
+
+      <div *ngIf="isLoading" class="text-center p-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando recetas...</p>
+      </div>
+
+      <div *ngIf="!isLoading" class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+          <thead>
+            <tr>
+              <th>Nombre de Receta</th>
+              <th>Producto Final</th>
+              <th>Tiempo (min)</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let v of recetasDisplay">
+              <td>{{ v.nombre }}</td>
+              <td>
+                <span class="badge bg-secondary">{{ v.productoNombre }}</span>
+              </td>
+              <td>{{ v.tiempoPrep }} min</td>
+              <td>
+                <div class="d-flex flex-wrap gap-2">
+                  <a class="btn btn-sm btn-rosa-secondary" [routerLink]="['/recetas/editar', v.idReceta]">
+                    <i class="bi bi-pencil-square"></i> Editar
+                  </a>
+                  <button class="btn btn-sm btn-danger" (click)="eliminar(v.idReceta!)">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="!isLoading && recetasDisplay.length === 0" class="alert alert-info text-center mt-3">
+        Aún no has creado ninguna receta.
+      </div>
+
+    </div>
+  </div>
+</div>

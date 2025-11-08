@@ -1,0 +1,50 @@
+<div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">{{ titulo }}</h2>
+        <div class="d-flex justify-content-end mb-3">
+          <a class="btn btn-sm" routerLink="/valorescomunes/nuevo">
+            <i class="bi bi-plus-circle"></i> Nuevo Valor
+          </a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered align-middle">
+            <thead>
+              <tr>
+                <th>Código Tabla</th>
+                <th>Clave 1</th>
+                <th>Clave 2</th>
+                <th>Valor 1</th>
+                <th>Valor 2</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of valores">
+                <td>{{ v.codTabla }}</td>
+                <td>{{ v.clave1 }}</td>
+                <td>{{ v.clave2 }}</td>
+                <td>{{ v.valor1 }}</td>
+                <td>{{ v.valor2 }}</td>
+                <td>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button *ngIf="mostrarBoton"
+                    class="btn btn-sm" (click)="irConParametros(v.clave1)">
+                      <i class="bi bi-journal-text"></i> Ir Tabla
+                    </button>
+                    <a class="btn btn-sm" [routerLink]="['/valorescomunes/editar', v.idValoresComunes]">
+                      <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                    <button class="btn btn-sm" (click)="eliminar(v.idValoresComunes)">
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

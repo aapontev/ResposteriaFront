@@ -1,0 +1,59 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0" style="color: #d16ba5;">
+    <i class="bi bi-card-list me-2"></i>
+    {{ titulo }}
+  </h2>
+  
+  <a class="btn" routerLink="/productos/nuevo" 
+     style="background-color: #f7a1c4; color: white;">
+    <i class="bi bi-plus-circle-dotted"></i> Nuevo Producto
+  </a>
+</div>
+
+<hr>
+
+<div *ngIf="isLoading" class="text-center mt-5">
+  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+    <span class="visually-hidden">Cargando productos...</span>
+  </div>
+  <p class="mt-2">Cargando productos...</p>
+</div>
+
+<div *ngIf="!isLoading" class="row g-4">
+  <div class="col-md-6 col-lg-4" *ngFor="let v of productosDisplay">
+    <div class="card shadow-sm h-100" [ngClass]="v.estiloTipoProducto">
+      
+      <img
+        [src]="v.urlImagen"
+        class="card-img-top"
+        [alt]="'Imagen de ' + v.nombre"
+      />
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">
+          <i class="bi bi-cupcake me-1" *ngIf="v.tipoProducto === 1"></i>
+          <i class="bi bi-bread-slice me-1" *ngIf="v.tipoProducto === 2"></i>
+          <i class="bi bi-cookie me-1" *ngIf="v.tipoProducto === 3"></i>
+          {{ v.nombre }}
+        </h5>
+        <p class="card-text mb-1"><strong>Precio:</strong> S/ {{ v.precio }}</p>
+        
+        <p class="card-text mb-1"><strong>Tipo:</strong> {{ v.nombreTipoProducto }}</p>
+        <p class="card-text mb-3"><strong>Descripción:</strong> {{ v.descripcion }}</p>
+
+        <div class="mt-auto d-flex flex-wrap gap-2">
+          <a class="btn btn-sm btn-rosa-secondary" [routerLink]="['/productos/editar', v.idProducto]">
+            <i class="bi bi-pencil-square"></i> Editar
+          </a>
+          <button class="btn btn-sm btn-rosa-primary" (click)="eliminar(v.idProducto!)">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!isLoading && productosDisplay.length === 0" class="alert alert-info text-center mt-4">
+  <i class="bi bi-info-circle me-2"></i>
+  No se encontraron productos para mostrar. ¡Intenta agregar uno nuevo!
+</div>

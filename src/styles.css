@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lato:wght@400;700&display=swap');
+
+/* --- 1. PALETA DE COLORES --- */
+:root {
+  --rosa-claro: #ffe4ec;
+  --rosa-medio: #f8c8dc;
+  --rosa-fuerte: #d16ba5;
+  --rosa-boton: #f7a1c4;
+  
+  /* --- [MODIFICADO] Texto Marrón Chocolate --- */
+  /* Sugerencia: Un marrón oscuro es más cálido y temático que un gris (#4a4a4a) */
+  --texto: #4E342E; 
+  
+  --fondo: #fff0f5;
+  --hover: #fce4ec;
+}
+
+/* --- 2. ESTILOS GLOBALES --- */
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: var(--fondo);
+  color: var(--texto);
+  /* Esta textura de fondo es una gran idea! */
+  background-image: url('https://www.transparenttextures.com/patterns/candy.png');
+  background-repeat: repeat;
+}
+
+/* Títulos con tu fuente script */
+h1, h2, h3, h4, h5, .card-title {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+}
+
+/* --- 3. COMPONENTES (Navbar, Header, Card, etc.) --- */
+/* (Tu código original - Está perfecto) */
+.navbar {
+  background-color: var(--rosa-fuerte) !important;
+}
+
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+
+header {
+  background-color: var(--rosa-medio);
+  text-align: center;
+  padding: 2rem 1rem;
+  background-image: url('https://images.unsplash.com/photo-1608219959301-6d3f9b3e2c2a?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px #d16ba5;
+}
+
+.card {
+  background-color: var(--rosa-claro);
+  border: none;
+  border-radius: 12px;
+  animation: fadeInUp 0.8s ease both;
+}
+
+h2 {
+  color: var(--rosa-fuerte);
+  font-weight: bold;
+}
+
+.table thead {
+  background-color: var(--rosa-fuerte);
+  color: white;
+}
+
+.table tbody tr:hover {
+  background-color: var(--hover);
+  transition: background-color 0.3s ease;
+}
+
+/* --- 4. ESTILOS DE BOTONES (MEJORADO) --- */
+
+/* [MODIFICADO] Base para todos los botones */
+.btn {
+  border: none;
+  color: white;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  font-weight: 600; /* Un poco más grueso */
+  border-radius: 8px; /* Bordes suaves */
+}
+
+.btn:hover {
+  transform: scale(1.05); /* Tu animación de hover */
+  color: white !important; /* Asegurar texto blanco */
+}
+
+/* [NUEVO] Clases de Botones (¡Usa estas en tu HTML!) */
+
+/* Para botones de "Guardar", "Nuevo", "Aceptar" */
+.btn-rosa-secondary {
+  background-color: var(--rosa-boton);
+}
+.btn-rosa-secondary:hover {
+  background-color: var(--rosa-fuerte); /* Se oscurece al pasar el mouse */
+}
+
+/* Para botones de "Cancelar", "Volver", "Eliminar" */
+.btn-rosa-primary {
+  background-color: var(--rosa-fuerte);
+}
+.btn-rosa-primary:hover {
+  background-color: #b3598c; /* Un tono más oscuro de rosa-fuerte */
+}
+
+/* --- 5. ESTILOS DE FORMULARIO (MEJORADO) --- */
+
+/* [NUEVO] Estilo para Inputs y Selects (Estado Normal) */
+/* Esto define cómo se ven ANTES de hacer clic */
+.form-control,
+.form-select {
+  background-color: #ffffff; /* Fondo blanco para que resalte en la tarjeta rosa */
+  border: 1px solid var(--rosa-medio); /* Borde rosa pálido */
+  color: var(--texto);
+  border-radius: 8px; /* Bordes suaves */
+}
+
+/* [NUEVO] Placeholder (texto de fondo) más suave */
+.form-control::placeholder {
+  color: #a0a0a0;
+  opacity: 1;
+}
+
+/* (Tu código original - Está perfecto) */
+.form-control:focus, .form-select:focus {
+  border-color: var(--rosa-boton); /* Usamos tu variable --rosa-boton */
+  box-shadow: 0 0 0 0.25rem rgba(247, 161, 196, 0.35); /* Sombra rosa pálido */
+}
+
+/* --- 6. OTROS (Tu código original) --- */
+footer {
+  background-color: var(--rosa-fuerte);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3rem;
+}
+
+footer a {
+  color: white;
+  margin: 0 0.5rem;
+  text-decoration: none;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

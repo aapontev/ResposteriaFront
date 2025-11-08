@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <div class="card shadow-sm p-4"
+    style="background-color: #ffe4ec; border-radius: 12px; animation: fadeInUp 0.8s ease both;">
+    <h2 class="mb-4 text-center" style="color: #d16ba5;">
+      {{ id ? 'Editar Ingrediente' : 'Nuevo Ingrediente' }}
+    </h2>
+
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <form *ngIf="!isLoading" [formGroup]="ingredienteForm" (ngSubmit)="guardar()">
+
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" id="nombre" class="form-control campo-suave" 
+               formControlName="nombre"
+               [class.is-invalid]="f.nombre.invalid && f.nombre.touched" />
+        <div *ngIf="f.nombre.invalid && f.nombre.touched" class="invalid-feedback">
+          <span *ngIf="f.nombre.errors?.['required']">El nombre es requerido.</span>
+          <span *ngIf="f.nombre.errors?.['minlength']">Debe tener al menos 3 caracteres.</span>
+        </div>
+      </div>
+
+      <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="stock" class="form-label">Stock</label>
+        <input type="number" id="stock" class="form-control campo-suave" 
+               formControlName="stock"
+               [class.is-invalid]="f.stock.invalid && f.stock.touched" />
+        <div *ngIf="f.stock.invalid && f.stock.touched" class="invalid-feedback">
+          <span *ngIf="f.stock.errors?.['required']">El stock es requerido.</span>
+          <span *ngIf="f.stock.errors?.['min']">El stock no puede ser negativo.</span>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="costoUnitario" class="form-label">Costo Unitario</label>
+        <input type="number" id="costoUnitario" class="form-control campo-suave" 
+               formControlName="costoUnitario"
+               [class.is-invalid]="f.costoUnitario.invalid && f.costoUnitario.touched" />
+        <div *ngIf="f.costoUnitario.invalid && f.costoUnitario.touched" class="invalid-feedback">
+          <span *ngIf="f.costoUnitario.errors?.['required']">El costo es requerido.</span>
+          <span *ngIf="f.costoUnitario.errors?.['min']">El costo debe ser mayor a 0.</span>
+        </div>
+      </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="unidadMedida" class="form-label">Unidad de Medida</label>
+        <select id="unidadMedida" class="form-select campo-suave" 
+                formControlName="unidadMedida"
+                [class.is-invalid]="f.unidadMedida.invalid && f.unidadMedida.touched">
+          <option [ngValue]="null" disabled>Seleccione una unidad</option>
+          <option *ngFor="let unidad of unidadMedidaOpciones" [ngValue]="unidad.id">
+            {{ unidad.nombre }}
+          </option>
+        </select>
+        <div *ngIf="f.unidadMedida.invalid && f.unidadMedida.touched" class="invalid-feedback">
+          La unidad de medida es requerida.
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <button class="btn btn-sm me-2" type="submit" 
+                style="background-color: #f7a1c4; color: white;"
+                [disabled]="ingredienteForm.invalid || isSaving">
+          <span *ngIf="!isSaving"><i class="bi bi-check-circle"></i> Guardar</span>
+          <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        </button>
+        <a class="btn btn-sm" routerLink="/ingredientes" style="background-color: #d16ba5; color: white;">
+          <i class="bi bi-x-circle"></i> Cancelar
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

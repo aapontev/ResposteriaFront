@@ -1,0 +1,29 @@
+/* Estilos para las filas dinámicas (FormArray) */
+.form-array-row {
+  display: flex;
+  align-items: flex-start; /* Alinear al inicio por si los inputs crecen */
+  gap: 0.75rem; /* Espacio entre columnas */
+  margin-bottom: 0.75rem; /* Espacio entre filas */
+}
+
+/* --- Columnas de Ingredientes --- */
+.form-array-row .col-ingrediente {
+  flex: 1 1 50%; /* Ocupa la mitad del espacio */
+}
+.form-array-row .col-cantidad {
+  flex: 1 1 30%; /* Ocupa un 30% */
+}
+
+/* --- Columnas de Pasos --- */
+.form-array-row .col-paso {
+  flex: 0 0 80px; /* Ancho fijo para el nro. de paso */
+}
+.form-array-row .col-detalle {
+  flex: 1 1 auto; /* Ocupa todo el espacio restante */
+}
+
+/* --- Columna de Acción (Botón Eliminar) --- */
+.form-array-row .col-accion {
+  flex: 0 0 auto; /* Ocupa solo el espacio del botón */
+  padding-top: 5px; /* Pequeño ajuste para alinear con los inputs */
+}
