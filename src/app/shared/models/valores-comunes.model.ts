@@ -1,5 +1,5 @@
 export interface ValoresComunes {
-  idValoresComunes: number;
+  idValoresComunes?: number;
   codTabla: string;
   clave1: string;
   clave2: string;

@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductosService } from '../../shared/service/productos.service';
 import { Producto } from '../../shared/models/producto.model';
-import { ValoresComunes } from '../../shared/models/valores-comunes.model';
 // 1. Importamos forkJoin y finalize de RxJS
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { ValoresComunesService } from '../../shared/service/valores-comunes.service';
 
 // 2. Interfaz para nuestro objeto de "display" (más limpio)
 interface ProductoDisplay extends Producto {
@@ -32,7 +32,10 @@ export class ProductosListComponent implements OnInit {
   private tipoProductoOpciones: { id: number; nombre: string }[] = [];
   private imagenOpciones: { id: number; url: string }[] = []; // 'url' es más claro
 
-  constructor(private service: ProductosService) {}
+  constructor(
+    private service: ProductosService,
+    private valoresComunesService: ValoresComunesService
+  ) {}
 
   ngOnInit(): void {
     // 4. SOLUCIÓN A LA CONDICIÓN DE CARRERA
@@ -40,8 +43,8 @@ export class ProductosListComponent implements OnInit {
     // SOLO cuando ambos hayan terminado, cargamos los productos.
     this.isLoading = true;
     forkJoin({
-      tipos: this.service.getByTabla('REP002'),
-      imagenes: this.service.getByTabla('REP003'),
+      tipos: this.valoresComunesService.getByTabla('REP002'),
+      imagenes: this.valoresComunesService.getByTabla('REP003'),
     }).subscribe({
       next: (data) => {
         // Mapeamos los datos de "traducción" primero

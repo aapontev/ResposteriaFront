@@ -10,9 +10,9 @@ import {
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { IngredientesService } from '../../shared/service/ingredientes.service';
 import { Ingrediente } from '../../shared/models/ingrediente.model';
-import { ValoresComunes } from '../../shared/models/valores-comunes.model';
 // 2. Importamos finalize
 import { finalize } from 'rxjs/operators';
+import { ValoresComunesService } from '../../shared/service/valores-comunes.service';
 
 @Component({
   selector: 'app-ingredientes-form',
@@ -33,6 +33,7 @@ export class IngredientesFormComponent implements OnInit {
 
   constructor(
     private service: IngredientesService,
+    private valoresComunesService: ValoresComunesService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder // 6. Inyectamos FormBuilder
@@ -78,7 +79,7 @@ export class IngredientesFormComponent implements OnInit {
   }
 
   cargarUnidadesDeMedida(): void {
-    this.service.getByTabla('REP001').subscribe({
+    this.valoresComunesService.getByTabla('REP001').subscribe({
       next: (data) => {
         this.unidadMedidaOpciones = data.map((v) => ({
           id: Number(v.clave1),

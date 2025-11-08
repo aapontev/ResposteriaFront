@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IngredientesService } from '../../shared/service/ingredientes.service';
 import { Ingrediente } from '../../shared/models/ingrediente.model';
-import { ValoresComunes } from '../../shared/models/valores-comunes.model';
 import { finalize } from 'rxjs/operators';
+import { ValoresComunesService } from '../../shared/service/valores-comunes.service';
 
 // 1. Interfaz para el objeto de "display" (más rápido)
 interface IngredienteDisplay extends Ingrediente {
@@ -27,13 +27,13 @@ export class IngredientesListComponent implements OnInit {
   // 3. Array privado para "traducción"
   private unidadMedidaOpciones: { id: number; nombre: string }[] = [];
 
-  constructor(private service: IngredientesService) {}
+  constructor(private service: IngredientesService,private valoresComunesService: ValoresComunesService) {}
 
   ngOnInit(): void {
     // 4. CORRECCIÓN DE CONDICIÓN DE CARRERA:
     // Primero cargamos las unidades de medida
     this.isLoading = true;
-    this.service.getByTabla('REP001').subscribe({
+    this.valoresComunesService.getByTabla('REP001').subscribe({
       next: (data) => {
         // 5. Guardamos las opciones de "traducción"
         this.unidadMedidaOpciones = data.map(v => ({

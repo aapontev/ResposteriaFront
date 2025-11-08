@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Receta } from '../models/receta.model';
 import { ValoresComunes } from '../models/valores-comunes.model';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecetasService {
-  private apiUrl = 'http://192.168.100.30:8090/api/recetas';
-  private apiUrlValores = 'http://192.168.100.30:8090/api/valorescomunes';
+  private apiUrl = `${environment.apiUrl}/recetas`;
 
   constructor(private http: HttpClient) {}
 
@@ -33,9 +33,4 @@ export class RecetasService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getByTabla(id: string): Observable<ValoresComunes[]> {
-    return this.http.get<ValoresComunes[]>(
-      `${this.apiUrlValores}/codTabla/${id}`
-    );
-  }
 }

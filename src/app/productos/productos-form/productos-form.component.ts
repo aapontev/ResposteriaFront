@@ -9,8 +9,8 @@ import {
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductosService } from '../../shared/service/productos.service';
 import { Producto } from '../../shared/models/producto.model';
-import { ValoresComunes } from '../../shared/models/valores-comunes.model';
 import { finalize } from 'rxjs/operators';
+import { ValoresComunesService } from '../../shared/service/valores-comunes.service';
 
 @Component({
   selector: 'app-productos-form',
@@ -30,6 +30,7 @@ export class ProductosFormComponent implements OnInit {
 
   constructor(
     private service: ProductosService,
+    private valoresComunesService: ValoresComunesService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder
@@ -122,7 +123,7 @@ export class ProductosFormComponent implements OnInit {
 
   cargarDropdowns(): void {
     // Cargar Tipos de Producto
-    this.service.getByTabla('REP002').subscribe({
+    this.valoresComunesService.getByTabla('REP002').subscribe({
       next: (data) => {
         this.tipoProductoOpciones = data.map((v) => ({
           id: Number(v.clave1),
@@ -136,7 +137,7 @@ export class ProductosFormComponent implements OnInit {
     });
 
     // Cargar Imágenes
-    this.service.getByTabla('REP003').subscribe({
+    this.valoresComunesService.getByTabla('REP003').subscribe({
       next: (data) => {
         this.imagenesOpciones = data.map((v) => ({
           id: Number(v.clave1),

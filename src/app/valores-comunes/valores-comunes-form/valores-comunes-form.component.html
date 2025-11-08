@@ -4,64 +4,83 @@
       {{ id ? 'Editar Valor Común' : 'Nuevo Valor Común' }}
     </h2>
 
-    <form #form="ngForm" (ngSubmit)="guardar()">
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <form *ngIf="!isLoading" [formGroup]="valorForm" (ngSubmit)="guardar()">
+      
       <div class="mb-3">
-        <label class="form-label">Código Tabla</label>
+        <label for="codTabla" class="form-label">Código Tabla</label>
         <input
           type="text"
+          id="codTabla"
           class="form-control"
-          name="cod_tabla"
-          [(ngModel)]="valor.codTabla"
-          required
+          formControlName="codTabla"
+          [class.is-invalid]="f.codTabla.invalid && f.codTabla.touched"
+        />
+        <div *ngIf="f.codTabla.invalid && f.codTabla.touched" class="invalid-feedback">
+          El Código de Tabla es requerido.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="clave1" class="form-label">Clave 1</label>
+        <input
+          type="text"
+          id="clave1"
+          class="form-control"
+          formControlName="clave1"
+          [class.is-invalid]="f.clave1.invalid && f.clave1.touched"
+        />
+        <div *ngIf="f.clave1.invalid && f.clave1.touched" class="invalid-feedback">
+          La Clave 1 es requerida.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="clave2" class="form-label">Clave 2 (Opcional)</label>
+        <input
+          type="text"
+          id="clave2"
+          class="form-control"
+          formControlName="clave2"
         />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Clave 1</label>
+        <label for="valor1" class="form-label">Valor 1 (Opcional)</label>
         <input
           type="text"
+          id="valor1"
           class="form-control"
-          name="clave1"
-          [(ngModel)]="valor.clave1"
-          required
+          formControlName="valor1"
         />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Clave 2</label>
+        <label for="valor2" class="form-label">Valor 2 (Opcional)</label>
         <input
           type="text"
+          id="valor2"
           class="form-control"
-          name="clave2"
-          [(ngModel)]="valor.clave2"
+          formControlName="valor2"
         />
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Valor 1</label>
-        <input
-          type="text"
-          class="form-control"
-          name="valor1"
-          [(ngModel)]="valor.valor1"
-        />
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Valor 2</label>
-        <input
-          type="text"
-          class="form-control"
-          name="valor2"
-          [(ngModel)]="valor.valor2"
-        />
-      </div>
-
-      <div class="d-flex justify-content-center mt-4">
-        <button class="btn btn-sm me-2" type="submit" style="background-color: #f7a1c4; color: white;">
-          <i class="bi bi-check-circle"></i> Guardar
+      <div class="d-flex justify-content-center mt-4 gap-2">
+        <button class="btn btn-sm btn-rosa-secondary" type="submit" 
+                [disabled]="valorForm.invalid || isSaving">
+          <span *ngIf="!isSaving"><i class="bi bi-check-circle"></i> Guardar</span>
+          <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
-        <a class="btn btn-sm" routerLink="/valorescomunes" style="background-color: #d16ba5; color: white;">
+        <a class="btn btn-sm btn-rosa-primary" routerLink="/valorescomunes">
           <i class="bi bi-x-circle"></i> Cancelar
         </a>
       </div>

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ValoresComunes } from '../models/valores-comunes.model';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValoresComunesService {
-  private apiUrl = 'http://192.168.100.30:8090/api/valorescomunes';
+  private apiUrl = `${environment.apiUrl}/valorescomunes`;
 
   constructor(private http: HttpClient) {}
 

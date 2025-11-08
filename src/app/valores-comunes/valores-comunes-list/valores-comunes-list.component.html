@@ -30,13 +30,13 @@
                 <td>
                   <div class="d-flex flex-wrap gap-2">
                     <button *ngIf="mostrarBoton"
-                    class="btn btn-sm" (click)="irConParametros(v.clave1)">
+                    class="btn btn-sm btn-rosa-secondary" (click)="irConParametros(v.clave1)">
                       <i class="bi bi-journal-text"></i> Ir Tabla
                     </button>
-                    <a class="btn btn-sm" [routerLink]="['/valorescomunes/editar', v.idValoresComunes]">
+                    <a class="btn btn-sm btn-rosa-primary" [routerLink]="['/valorescomunes/editar', v.idValoresComunes]">
                       <i class="bi bi-pencil-square"></i> Editar
                     </a>
-                    <button class="btn btn-sm" (click)="eliminar(v.idValoresComunes)">
+                    <button class="btn btn-sm btn-rosa-secondary" (click)="eliminar(v.idValoresComunes!)">
                       <i class="bi bi-trash"></i> Eliminar
                     </button>
                   </div>

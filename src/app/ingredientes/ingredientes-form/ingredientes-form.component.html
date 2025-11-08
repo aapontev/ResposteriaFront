@@ -68,13 +68,12 @@
       </div>
 
       <div class="d-flex justify-content-center mt-4">
-        <button class="btn btn-sm me-2" type="submit" 
-                style="background-color: #f7a1c4; color: white;"
+        <button class="btn btn-sm me-2 btn-rosa-secondary" type="submit" 
                 [disabled]="ingredienteForm.invalid || isSaving">
           <span *ngIf="!isSaving"><i class="bi bi-check-circle"></i> Guardar</span>
           <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
-        <a class="btn btn-sm" routerLink="/ingredientes" style="background-color: #d16ba5; color: white;">
+        <a class="btn btn-sm btn-rosa-primary" routerLink="/ingredientes" >
           <i class="bi bi-x-circle"></i> Cancelar
         </a>
       </div>
