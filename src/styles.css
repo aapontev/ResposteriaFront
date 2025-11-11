@@ -158,3 +158,28 @@ footer a {
     transform: translateY(0);
   }
 }
+/* ========================================================= */
+/* === NUEVO: ELIMINAR NAVBAR Y MARCA DE AGUA AL IMPRIMIR === */
+/* ========================================================= */
+@media print {
+  /* 1. Ocultar el Navbar y el Footer Global */
+  app-navbar, footer, header {
+    display: none !important;
+  }
+
+  /* 2. Quitar la imagen de fondo (marca de agua) del body */
+  body {
+    background-image: none !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 3. Asegurar que el contenedor no tenga márgenes extraños */
+  .container, .container-sm, .container-fluid {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}

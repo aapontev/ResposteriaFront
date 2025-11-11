@@ -15,29 +15,25 @@
       
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" id="nombre" class="form-control campo-suave" 
-               formControlName="nombre"
+        <input type="text" id="nombre" class="form-control" formControlName="nombre"
                [class.is-invalid]="f.nombre.invalid && f.nombre.touched" />
         <div *ngIf="f.nombre.invalid && f.nombre.touched" class="invalid-feedback">
           <span *ngIf="f.nombre.errors?.['required']">El nombre es requerido.</span>
           <span *ngIf="f.nombre.errors?.['minlength']">Debe tener al menos 3 caracteres.</span>
         </div>
       </div>
-
       <div class="mb-3">
         <label for="precio" class="form-label">Precio</label>
-        <input type="number" id="precio" class="form-control campo-suave"
-               formControlName="precio"
+        <input type="number" id="precio" class="form-control" formControlName="precio"
                [class.is-invalid]="f.precio.invalid && f.precio.touched" />
         <div *ngIf="f.precio.invalid && f.precio.touched" class="invalid-feedback">
           <span *ngIf="f.precio.errors?.['required']">El precio es requerido.</span>
           <span *ngIf="f.precio.errors?.['min']">El precio debe ser mayor a 0.</span>
         </div>
       </div>
-      
       <div class="mb-3">
         <label for="tipoProducto" class="form-label">Tipo Producto</label>
-        <select id="tipoProducto" class="form-select campo-suave" 
+        <select id="tipoProducto" class="form-select" 
                 formControlName="tipoProducto"
                 [class.is-invalid]="f.tipoProducto.invalid && f.tipoProducto.touched">
           <option [ngValue]="null" disabled>Seleccione un tipo</option>
@@ -52,18 +48,17 @@
 
       <div class="mb-3">
         <label for="idImagen" class="form-label">Imagen (Opcional)</label>
-        <select id="idImagen" class="form-select campo-suave" 
-                formControlName="idImagen">
-          <option [ngValue]="null">-- Sin Imagen --</option>
-          <option *ngFor="let unidad of imagenesOpciones" [ngValue]="unidad.id">
-            {{ unidad.nombre }}
-          </option>
-        </select>
-        </div>
+        <input type="file" id="idImagen" class="form-control" 
+               (change)="onFileSelected($event)">
+      </div>
 
+      <div *ngIf="imagePreview" class="mb-3 text-center">
+        <label class="form-label d-block">Vista Previa:</label>
+        <img [src]="imagePreview" class="img-thumbnail" style="max-height: 200px; max-width: 200px; object-fit: cover;">
+      </div>
       <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción</label>
-        <input type="text" id="descripcion" class="form-control campo-suave" 
+        <input type="text" id="descripcion" class="form-control" 
                formControlName="descripcion"
                [class.is-invalid]="f.descripcion.invalid && f.descripcion.touched" />
         <div *ngIf="f.descripcion.invalid && f.descripcion.touched" class="invalid-feedback">

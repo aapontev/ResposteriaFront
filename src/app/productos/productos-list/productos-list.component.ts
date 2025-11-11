@@ -3,15 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductosService } from '../../shared/service/productos.service';
 import { Producto } from '../../shared/models/producto.model';
-// 1. Importamos forkJoin y finalize de RxJS
-import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { ValoresComunesService } from '../../shared/service/valores-comunes.service';
+import { ValoresComunesService } from '../../shared/service/valores-comunes.service'; // Importar
 
-// 2. Interfaz para nuestro objeto de "display" (más limpio)
+// Interfaz actualizada
 interface ProductoDisplay extends Producto {
   nombreTipoProducto: string;
-  urlImagen: string;
+  urlImagenCompleta: string; // URL completa para mostrar
   estiloTipoProducto: string;
 }
 
@@ -23,65 +21,51 @@ interface ProductoDisplay extends Producto {
 })
 export class ProductosListComponent implements OnInit {
   titulo: String = 'Lista de Productos';
-  isLoading = true; // 3. Añadimos flag de carga
-
-  // Usaremos este array para el *ngFor
+  isLoading = true; 
   productosDisplay: ProductoDisplay[] = [];
   
-  // Estos arrays ahora solo guardan los datos de "traducción"
   private tipoProductoOpciones: { id: number; nombre: string }[] = [];
-  private imagenOpciones: { id: number; url: string }[] = []; // 'url' es más claro
+  // imagenOpciones ya no se usa
+  private apiUrlBase: string;
 
   constructor(
     private service: ProductosService,
-    private valoresComunesService: ValoresComunesService
-  ) {}
+    private valoresComunesService: ValoresComunesService // Inyectar
+  ) {
+    this.apiUrlBase = this.service.getApiUrlBase(); // Obtener URL base
+  }
 
   ngOnInit(): void {
-    // 4. SOLUCIÓN A LA CONDICIÓN DE CARRERA
-    // Usamos forkJoin para cargar AMBOS (tipos e imágenes) en paralelo.
-    // SOLO cuando ambos hayan terminado, cargamos los productos.
     this.isLoading = true;
-    forkJoin({
-      tipos: this.valoresComunesService.getByTabla('REP002'),
-      imagenes: this.valoresComunesService.getByTabla('REP003'),
-    }).subscribe({
-      next: (data) => {
-        // Mapeamos los datos de "traducción" primero
-        this.tipoProductoOpciones = data.tipos.map((v) => ({
+    
+    // forkJoin ahora solo carga los tipos
+    this.valoresComunesService.getByTabla('REP002').subscribe({
+      next: (dataTipos) => {
+        this.tipoProductoOpciones = dataTipos.map((v) => ({
           id: Number(v.clave1),
           nombre: v.valor1,
         }));
         
-        // (Corregido: 'valor2' parece ser la URL, lo renombramos a 'url')
-        this.imagenOpciones = data.imagenes.map((v) => ({
-          id: Number(v.clave1),
-          url: v.valor2, // Asumimos que valor2 es la URL
-        }));
-        
-        // 5. AHORA SÍ, cargamos los productos
+        // Cuando los tipos estén listos, cargar productos
         this.cargarProducto();
       },
       error: (err) => {
         console.error('Error al cargar datos iniciales', err);
         this.isLoading = false;
-        // Aquí podrías mostrar un error en la UI
       }
     });
   }
 
   cargarProducto(): void {
     this.service.getAll()
-      .pipe(finalize(() => this.isLoading = false)) // Se ejecuta al final (next o error)
+      .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (data: Producto[]) => {
-          // 6. MEJORA DE RENDIMIENTO
-          // "Pre-procesamos" el array.
-          // Convertimos IDs a nombres/URLs UNA SOLA VEZ aquí.
           this.productosDisplay = data.map(producto => ({
             ...producto,
             nombreTipoProducto: this.getNombreTipoProducto(producto.tipoProducto),
-            urlImagen: this.getURLImagen(producto.idImagen),
+            // Construir la URL completa de la imagen
+            urlImagenCompleta: this.getURLImagen(producto.imagenUrl),
             estiloTipoProducto: this.getEstiloTipoProducto(producto.tipoProducto)
           }));
         },
@@ -91,12 +75,9 @@ export class ProductosListComponent implements OnInit {
 
   eliminar(id: number): void {
     if (confirm('¿Seguro de eliminar este registro?')) {
-      this.isLoading = true; // Mostramos spinner mientras se borra
+      this.isLoading = true;
       this.service.delete(id).subscribe({
         next: () => {
-          // En lugar de recargar todo, podríamos solo filtrar el array
-          // this.productosDisplay = this.productosDisplay.filter(p => p.idProducto !== id);
-          // Pero recargar asegura consistencia con la DB
           this.cargarProducto(); 
         },
         error: (err) => {
@@ -107,22 +88,24 @@ export class ProductosListComponent implements OnInit {
     }
   }
 
-  // --- FUNCIONES HELPER (AHORA PRIVADAS O INTERNAS) ---
-  // Estas funciones ahora se llaman 1 sola vez (en cargarProducto)
-  // y no en cada ciclo de detección de cambios.
-
   private getNombreTipoProducto(id: number): string {
     const unidad = this.tipoProductoOpciones.find((u) => u.id === id);
     return unidad ? unidad.nombre : 'No definido';
   }
 
-  // 7. Hacemos la función segura para IDs opcionales (id?: number)
-  private getURLImagen(id?: number): string {
-    if (!id) {
-      return 'https://i.ibb.co/wZTGwSjp/IMG-20250629-WA0000.jpg'; // Default
+  // MODIFICADO: Esta función ahora recibe la URL parcial
+  private getURLImagen(urlParcial?: string): string {
+    const defaultImage = 'https://i.ibb.co/wZTGwSjp/IMG-20250629-WA0000.jpg';
+    
+    if (!urlParcial) {
+      return defaultImage;
     }
-    const unidad = this.imagenOpciones.find((u) => u.id === id);
-    return unidad ? unidad.url : 'https://i.ibb.co/wZTGwSjp/IMG-20250629-WA0000.jpg'; // Default si no lo encuentra
+    // Si la URL ya es completa (ej. de otro sitio), usarla
+    if (urlParcial.startsWith('http')) {
+      return urlParcial;
+    }
+    // Si es una ruta local, construirla con la URL base de la API
+    return `${this.apiUrlBase}${urlParcial}`;
   }
 
   private getEstiloTipoProducto(tipo: number): string {

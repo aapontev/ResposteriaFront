@@ -1,29 +1,159 @@
-/* Estilos para las filas dinámicas (FormArray) */
+/* ... (Tus estilos existentes para .form-array-row, etc. van aquí) ... */
 .form-array-row {
   display: flex;
-  align-items: flex-start; /* Alinear al inicio por si los inputs crecen */
-  gap: 0.75rem; /* Espacio entre columnas */
-  margin-bottom: 0.75rem; /* Espacio entre filas */
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
-
-/* --- Columnas de Ingredientes --- */
 .form-array-row .col-ingrediente {
-  flex: 1 1 50%; /* Ocupa la mitad del espacio */
+  flex: 1 1 50%;
 }
 .form-array-row .col-cantidad {
-  flex: 1 1 30%; /* Ocupa un 30% */
+  flex: 1 1 30%;
 }
-
-/* --- Columnas de Pasos --- */
 .form-array-row .col-paso {
-  flex: 0 0 80px; /* Ancho fijo para el nro. de paso */
+  flex: 0 0 80px;
 }
 .form-array-row .col-detalle {
-  flex: 1 1 auto; /* Ocupa todo el espacio restante */
+  flex: 1 1 auto;
+}
+.form-array-row .col-accion {
+  flex: 0 0 auto;
+  padding-top: 5px;
 }
 
-/* --- Columna de Acción (Botón Eliminar) --- */
-.form-array-row .col-accion {
-  flex: 0 0 auto; /* Ocupa solo el espacio del botón */
-  padding-top: 5px; /* Pequeño ajuste para alinear con los inputs */
+/* ================================================= */
+/* === NUEVO: ESTILOS DE IMPRESIÓN === */
+/* ================================================= */
+
+/* --- 1. Ocultar la vista de impresión en la pantalla --- */
+@media screen {
+  #print-view {
+    display: none;
+  }
+}
+
+@media print {
+  /* Ocultar todo lo que no queremos imprimir */
+  body * {
+    visibility: hidden;
+  }
+  .print-hidden, .print-hidden * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  #print-view, #print-view * {
+    visibility: visible;
+    color: var(--texto) !important; /* Forzar el color de texto de tu tema */
+    -webkit-print-color-adjust: exact; /* Forzar colores en Chrome/Safari */
+    print-color-adjust: exact; /* Forzar colores en Firefox */
+  }
+
+  /* Estilo de la "Tarjeta de Receta" para el PDF */
+  #print-view {
+    position: relative; /* Cambiado de 'absolute' para que el centrado funcione */
+    width: 100%;
+    max-width: 600px;   /* Ancho máximo (similar a un móvil/tablet) */
+    margin: 0 auto;     /* Centra la hoja en la página de impresión */
+    padding: 25px;
+    font-family: 'Lato', sans-serif;
+    border: 1px solid var(--rosa-medio);
+    border-top: 3px solid var(--rosa-fuerte); 
+    border-radius: 8px;
+  }
+/* === NUEVO ESTILO PARA EL LOGO === */
+  .print-logo {
+    /* 1. Quitamos 'position: absolute' para que ocupe su propio espacio */
+    display: block;
+    /* 2. Tamaño y márgenes */
+    width: 80px;       /* Un poco más grande para que se vea bien */
+    height: auto;
+    margin-bottom: 15px; /* Espacio debajo del logo para que no pegue con el título/imagen */
+    /* 3. Alineación (a la izquierda como pediste) */
+    margin-left: 0;
+    /* Estilo opcional para que se vea bonito */
+    border-radius: 50%;
+  }
+  /* Imagen del Producto (Cover Photo) */
+  .print-product-image {
+    width: 100%;
+    max-height: 300px; /* Límite de altura */
+    object-fit: cover; /* Recortar la imagen para que encaje */
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  /* Cabecera (Título, Desc, Resumen) */
+  .print-header {
+    border-bottom: 3px solid var(--rosa-fuerte);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .print-title {
+    font-family: 'Dancing Script', cursive !important;
+    color: var(--rosa-fuerte) !important;
+    font-weight: 700 !important;
+    font-size: 3rem;
+    margin-bottom: 3px;
+  }
+
+  .print-description {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--texto) !important;
+    margin-bottom: 15px;
+  }
+
+  .print-summary {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .print-summary div {
+    color: var(--rosa-fuerte) !important;
+  }
+
+  /* Cuerpo (Ingredientes y Pasos) */
+  .print-body {
+    width: 100%;
+    margin-bottom: 50px; /* Espacio antes del pie de página */
+  }
+
+  .print-section h4 {
+    font-family: 'Dancing Script', cursive !important;
+    color: var(--rosa-fuerte) !important;
+    font-weight: 700 !important;
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--rosa-medio);
+    padding-bottom: 5px;
+    margin-top: 10px;
+  }
+  
+  .print-list {
+    font-size: 1rem;
+    margin-left: 20px;
+  }
+  .print-list li {
+    padding-bottom: 8px;
+  }
+
+  /* Pie de Página */
+  .print-footer {
+    position: fixed; /* Fijo al final de la página */
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Dancing Script', cursive !important;
+    color: var(--rosa-medio) !important;
+    font-size: 1.2rem;
+  }
+  
+  /* Evitar saltos de página extraños */
+  h2, h4, p, ul, ol, img {
+    page-break-inside: avoid;
+  }
 }
